@@ -29,6 +29,3 @@
      与奶油文字的对比度 12.7:1（WCAG AAA 要求 7:1）。 */
   --_global-colors---brand-500--velvet-plum: #153228;
 }
-/* 公开版覆盖层：ERA Residence 版权花枝视频（assets/videos）不随发布包分发，隐藏对应装饰层 */
-.flower { display: none !important; }
-

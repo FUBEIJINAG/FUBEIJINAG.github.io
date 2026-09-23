@@ -1,0 +1,189 @@
+/* ==================================================================
+   zh.css —— 中文排版覆盖层
+   ------------------------------------------------------------------
+   原站字体是为拉丁字母设计的：
+     · 展示体  ambroise-francois-std  高对比衬线，用于大标题
+     · 正文字体 Maison Neue Extended  无衬线，用于正文 / 导航
+     · 手写体  sloop-script-three     花体，用于 "Estepona / yours" 之类点缀
+   这些字体没有中文字形，中文会掉到浏览器默认字体。
+   下面的做法是「拉丁字符继续用原字体，中文用气质相近的系统字体」：
+
+     标题  → 宋体 / 思源宋体（对应原来的高对比衬线）
+     正文  → 苹方 / 思源黑体 / 微软雅黑（对应原来的无衬线）
+     点缀  → 楷体（对应原来的花体）
+
+   改这里之前请先备份；所有数值都可以直接调。
+   ================================================================== */
+
+:root {
+  --_fonts---font-display:
+    ambroise-francois-std,
+    "Source Han Serif SC", "Noto Serif SC",
+    "Songti SC", "STSong", "SimSun", "宋体",
+    serif;
+
+  --_fonts---font-body:
+    "Maison Neue Extended",
+    "PingFang SC", "Hiragino Sans GB",
+    "Source Han Sans SC", "Noto Sans SC",
+    "Microsoft YaHei", "微软雅黑",
+    system-ui, sans-serif;
+
+  --_fonts---font-accent:
+    sloop-script-three,
+    "Kaiti SC", "STKaiti", "KaiTi", "楷体",
+    cursive;
+}
+
+/* ------------------------------------------------------------------
+   字距
+   原站给标题设了负字距（-0.024em），那是为了让大写的拉丁字母收紧；
+   中文方块字收紧会显得拥挤，所以标题字距归零。
+   小标签（l2 / c1）的宽字距保留但收窄，中文拉开一点反而好看。
+   ------------------------------------------------------------------ */
+:root {
+  --_fonts---h1--letter-spacing: 0.01em;
+  --_fonts---h2--letter-spacing: 0.01em;
+  --_fonts---h3--letter-spacing: 0.01em;
+  --_fonts---h4--letter-spacing: 0.01em;
+  --_fonts---h5--letter-spacing: 0.01em;
+  --_fonts---h6--letter-spacing: 0.02em;
+  --_fonts---p1--letter-spacing: 0.01em;
+  --_fonts---p2--letter-spacing: 0.01em;
+  --_fonts---l1--letter-spacing: 0.14em;
+  --_fonts---l2--letter-spacing: 0.28em;
+  --_fonts---c1--letter-spacing: 0.5em;
+}
+
+/* 中文不使用 text-transform / 斜体，避免出现多余的字母间距与伪斜体 */
+body { font-synthesis-style: none; }
+
+/* ------------------------------------------------------------------
+   中文行高
+   ------------------------------------------------------------------
+   中文方块字占满字身框，没有拉丁字母的升部/降部，同样的 line-height
+   在中文里看起来要挤得多。原站这套 1.0–1.12 是给拉丁展示体留的余量，
+   中文要再打开一些。
+
+   数值按字号分档：字越大，需要的行高倍数越小（大字的字面留白本来
+   就少，倍数再大就会散）。想整体再松/再紧，改这一组数字即可。
+   ------------------------------------------------------------------ */
+
+.h1, [class*="h1"]           { line-height: 1.22; }
+.h2, [class*="h2"]           { line-height: 1.24; }
+.h3, [class*="h3"]           { line-height: 1.26; }
+.h4, [class*="h4"], .display { line-height: 1.30; }
+.h5, [class*="h5"]           { line-height: 1.40; }
+.h6, [class*="h6"]           { line-height: 1.40; }
+
+/* 小标签：原站 1.12 ~ 1.33，中文拉开一点 */
+.c1                          { line-height: 1.30; }
+.a1, .a2                     { line-height: 1.15; }
+.l2                          { line-height: 1.60; }
+
+/* 正文段落：中文行高比英文需要更大 */
+p, .p1, .p2, .l1             { line-height: 1.92; }
+
+/* 表单 / 按钮里的短标签保持居中 */
+.a1, .a2 { font-weight: 400; }
+/* ==================================================================
+   去掉「花体点缀」的倾斜
+   ------------------------------------------------------------------
+   原站这些位置放的是拉丁花体字（sloop-script-three），本身就带书写倾斜，
+   所以版式给它们统一设了 rotate(-12deg)，两者叠加很自然。
+
+   换成中文楷体后，字面是正的，再叠 -12° 就变成生硬地「歪着放」，
+   视觉上不平衡。这里统一改回水平。
+
+   涉及 9 处：
+     首屏「埃斯特波纳」· 居住空间「容器」· 你想 要的海岸「已属于你」
+     加载动画「埃斯特波纳」· 菜单弹层「主」· 预约弹层
+     Cookie 卡片标题 · 表单成功提示 · 错误页
+
+   如果以后换回英文花体，把这段删掉即可恢复倾斜。
+   ================================================================== */
+
+.hero-s_logo_a,
+.interior-s_title_a,
+.loc-path-s_title_a,
+.preloader_logo_a,
+.modal_menu_a,
+.modal_cta_a,
+.form_success_a,
+.cookies_card_title,
+.error-s_title_a {
+  transform: none;
+}
+
+/* 倾斜去掉后，原本为斜体预留的负边距会显得过挤，收一收 */
+.hero-s_logo_a { margin-left: calc(var(--16px) * -1); margin-top: calc(var(--24px) * -1); }
+.interior-s_title_a { margin-left: calc(var(--16px) * -1); margin-top: calc(var(--40px) * -1); }
+
+.loc-path-s_title_a { margin-top: calc(var(--16px) * -1); }
+.preloader_logo_a { margin-left: calc(var(--16px) * -1); margin-top: calc(var(--16px) * -1); }
+
+/* 「容器」原本走 .a1（= 花体点缀位，中文落到楷体）。
+   楷体笔画本身就是斜的，和同组的三行宋体大字「安放 / 生活 / 的」不在一个倾角上，
+   看起来像单独歪着放。这里让它改用主标题同一套展示字体，字面正、行气齐。 */
+.interior-s_title_a .a1 {
+  font-family: var(--_fonts---font-display);
+}
+/* ------------------------------------------------------------------
+   花体点缀位的中文行距修正
+   ------------------------------------------------------------------
+   原站 .a2（花体点缀）带负边距：
+       .a2                    { margin-top: .175em; margin-bottom: -.175em }
+       .loc-path-s_title_a.a2 { margin-top: calc(var(--24px) * -1) }
+   拉丁花体字内部留白大，负边距是把视觉重心收拢；
+   中文楷体字面几乎撑满字身框，同样数值就是直接撞字。
+
+   注意：必须写成 .loc-path-s_title_a.a2（权重 0,2,0），
+   只写 .loc-path-s_title_a 会被原规则压住，不生效。
+   ------------------------------------------------------------------ */
+
+/* 全局：把 .a1 / .a2 的视觉补偿关掉
+   —— 中文楷体字面本来就居中，这套为花体设计的偏移对中文有害 */
+.a1,
+.a2 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* 三行标题：归零后贴着，再给一点呼吸 */
+.loc-path-s_title_a.a2 {
+  margin-top: var(--12px);
+  margin-bottom: var(--12px);
+}
+
+/* 同行之间留一点呼吸，靠 margin 而不是靠 line-height 撑 */
+.loc-path-s_title_line { line-height: 1.14; }
+
+
+/* ==================================================================
+   首屏图片上的三个「+」热点（.pins-cms）
+   ------------------------------------------------------------------
+   三个热点是绝对定位的小圆点，鼠标移上去才会弹出说明卡。
+
+   但 webflow.css 给 .hero-s_logo / .hero-s_title 写了
+   pointer-events: auto，而它们在 DOM 上又排在热点之上（.pins-cms
+   的 z-index:5 被困在 z-index:0 的 .hero-w_bg 里，压不过 z-index:1
+   的 .hero-s）。结果左、中两个热点的命中区被中文大字盖住，
+   鼠标移上去没反应 —— 只有最右边那个没被压住，能正常用。
+
+   中文行高调开之后文字盒子更高，盖得更狠。这里让纯文字层退出命中，
+   只把「白天 / 夜晚」两个页签重新打开（.hero-s_tabs）。
+
+   注意：底部「查看在售房源」按钮在 .hero-s_b 里，不在 .hero-s 内，
+   不受这条规则影响。
+   ================================================================== */
+
+.hero-s_logo,
+.hero-s_logo_a,
+.hero-s_title {
+  pointer-events: none;
+}
+
+.hero-s_tabs,
+.hero-s_tabs a {
+  pointer-events: auto;
+}
